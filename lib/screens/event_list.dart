@@ -1,5 +1,4 @@
 import 'package:events_flutter/models/category.dart';
-import 'package:events_flutter/models/event.dart';
 import 'package:flutter/material.dart';
 import 'package:events_flutter/utils/database_helper.dart';
 
@@ -155,30 +154,6 @@ class _EventListState extends State<EventList> {
         },
       ),
     );
-  }
-
-  //this method will fill the list view with events
-  void _fillWidgets() {
-    //fill the categories dropDownButton
-    _fillCategoryDropDownButton();
-//    var eventList = List<Event>();
-//    _eventList = List<Event>();
-
-/*    _databaseHelper.save(Event(
-        "اللجنة المالية",
-        "تجتمع اللجنة المالية يوم الخميس الموافق 6/12/2018 الساعة 11:00 صباحاً، لمناقشة المخالفات الواردة في تقرير ديوان المحاسبة لعام 2016.",
-        "ديسمبر 6, 2018",
-        "11:00 م"));
-    _databaseHelper.save(Event(
-        "اللجنة القانونية",
-        "تجتمع اللجنة القانونية يوم الخميس الموافق 6/12/2018 الساعة 12:00 ظهراً وذلك لمناقشة مشروع قانون الملكية العقارية لسنة 2017",
-        "ديسمبر 6, 2018",
-        "12:00 م"));*/
-
-    //here i'll select all the inserted events and fill them in the list
-//    eventList = await _databaseHelper.select();
-//    _eventList = _databaseHelper.sele
-//    _count = _eventList.length;
   }
 
   //this method will fill the category dropDownButton with categories
