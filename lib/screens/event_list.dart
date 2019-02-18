@@ -68,94 +68,6 @@ class _EventListState extends State<EventList> {
     );
   }
 
-  Widget _getEventsList() {
-    return Container(
-      margin: EdgeInsets.all(_minimumMargin * 2),
-      child: ListView.builder(
-        itemCount: _count,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            child: Card(
-                elevation: 5,
-                child: Container(
-                  child: ListTile(
-                    title: Column(
-                      children: <Widget>[
-                        Row(
-                          textDirection: TextDirection.rtl,
-                          children: <Widget>[
-                            //title
-                            Text(
-                              ":الجهة",
-                              style: _boldText,
-                            ),
-                            _getContainer(),
-//                            Text(
-//                              _eventList[index].title,
-//                              style: _regularText,
-//                            ),
-                          ],
-                        ),
-                        Row(
-                          textDirection: TextDirection.rtl,
-                          children: <Widget>[
-                            //title
-                            Text(
-                              "الموضوع:",
-                              style: _boldText,
-                              textDirection: TextDirection.rtl,
-                            ),
-                            _getContainer(),
-                            Expanded(
-                              child: Text(
-                                _eventList[index].subject,
-                                style: _regularText,
-                                textDirection: TextDirection.rtl,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          textDirection: TextDirection.rtl,
-                          children: <Widget>[
-                            //title
-                            Text(
-                              ":الـتـاريـخ",
-                              style: _boldText,
-                            ),
-                            _getContainer(),
-                            Text(
-                              _eventList[index].date,
-                              style: _regularText,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          textDirection: TextDirection.rtl,
-                          children: <Widget>[
-                            //title
-                            Text(
-                              ":الـــوقــت",
-                              style: _boldText,
-                            ),
-                            _getContainer(),
-                            Text(
-                              _eventList[index].time,
-                              style: _regularText,
-                              textDirection: TextDirection.rtl,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                )),
-          );
-        },
-      ),
-    );
-  }
-
   //this method will fill the category dropDownButton with categories
   _fillCategoryDropDownButton() async {
     //fires clear the category table
@@ -201,4 +113,92 @@ class _EventListState extends State<EventList> {
     );
     return image;
   }
+
+//  Widget _getEventsList() {
+//    return Container(
+//      margin: EdgeInsets.all(_minimumMargin * 2),
+//      child: ListView.builder(
+//        itemCount: _count,
+//        itemBuilder: (BuildContext context, int index) {
+//          return Container(
+//            child: Card(
+//                elevation: 5,
+//                child: Container(
+//                  child: ListTile(
+//                    title: Column(
+//                      children: <Widget>[
+//                        Row(
+//                          textDirection: TextDirection.rtl,
+//                          children: <Widget>[
+//                            //title
+//                            Text(
+//                              ":الجهة",
+//                              style: _boldText,
+//                            ),
+//                            _getContainer(),
+////                            Text(
+////                              _eventList[index].title,
+////                              style: _regularText,
+////                            ),
+//                          ],
+//                        ),
+//                        Row(
+//                          textDirection: TextDirection.rtl,
+//                          children: <Widget>[
+//                            //title
+//                            Text(
+//                              "الموضوع:",
+//                              style: _boldText,
+//                              textDirection: TextDirection.rtl,
+//                            ),
+//                            _getContainer(),
+//                            Expanded(
+//                              child: Text(
+//                                _eventList[index].subject,
+//                                style: _regularText,
+//                                textDirection: TextDirection.rtl,
+//                              ),
+//                            ),
+//                          ],
+//                        ),
+//                        Row(
+//                          textDirection: TextDirection.rtl,
+//                          children: <Widget>[
+//                            //title
+//                            Text(
+//                              ":الـتـاريـخ",
+//                              style: _boldText,
+//                            ),
+//                            _getContainer(),
+//                            Text(
+//                              _eventList[index].date,
+//                              style: _regularText,
+//                            ),
+//                          ],
+//                        ),
+//                        Row(
+//                          textDirection: TextDirection.rtl,
+//                          children: <Widget>[
+//                            //title
+//                            Text(
+//                              ":الـــوقــت",
+//                              style: _boldText,
+//                            ),
+//                            _getContainer(),
+//                            Text(
+//                              _eventList[index].time,
+//                              style: _regularText,
+//                              textDirection: TextDirection.rtl,
+//                            ),
+//                          ],
+//                        ),
+//                      ],
+//                    ),
+//                  ),
+//                )),
+//          );
+//        },
+//      ),
+//    );
+//  }
 }
