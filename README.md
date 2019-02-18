@@ -1,6 +1,9 @@
 # events_flutter
 
-A new Flutter application.
+Using this app i'll try testing my abilities to create an app that view events with
+two dropDownMenus one for the categories and the other for the event entities that
+belong to that chosen category, and a list that view all the events related for
+the selected event entity.
 
 ## Getting Started
 
