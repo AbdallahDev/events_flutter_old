@@ -50,12 +50,20 @@ class DatabaseHelper {
       db.execute(
           "create table $_categoryTable($_categoryIdCol integer primary key autoincrement, "
           "$_categoryNameCol text)");
+      //bellow i'll insert values in the category table
+      db.execute(
+          "insert into $_categoryTable ($_categoryNameCol) values('مكتب دائم'), ('مكتب تنفيذي'),"
+          " ('كتل'),  ('لجان دائمة'), ('لجان اخوة'), ('لجان صداقة')");
 
       //this method to create the entity table
       db.execute(
           "create table $_entityTable($_entityIdCol integer primary key autoincrement, "
-          "$_entityNameCol text, $_entityRankCol integer, "
-          "$_entityCategoryIdCol integer)");
+          "$_entityNameCol text, $_entityCategoryIdCol integer, $_entityRankCol integer)");
+
+      //bellow i'll insert values in the entity table
+      db.execute(
+          "insert into $_entityTable ($_entityNameCol, $_entityCategoryIdCol, $_entityRankCol) "
+          "values ('جميع الجهات',1,1), ('اللجنة القانونية',1,1), ('اللجنة المالية',1,2), ('لجنة الاقتصاد والاستثمار',1,3), ('كتلة التجديد',2,1), ('كتلة الوفاء والعهد',2,2), ('كتلة العدالة',2,3), ('لجنة الاخوة الاردنية الاماراتية',3,1), ('لجنة الاخوة البرلمانية الاردنية اللبنانية',3,2), ('لجنة الاخوة الاردنية القطرية',3,4)");
 
       //this method to create the event_entity table
       db.execute(
@@ -66,19 +74,28 @@ class DatabaseHelper {
       db.execute(
           "create table $_eventTable($_eventIdCol integer primary key autoincrement, "
           "$_eventSubjectCol text, $_eventDateCol text, $_eventTimeCol text)");
+
+      //bellow i'll insert values in the event table
+      db.execute(
+          "insert into $_eventTable ($_eventSubjectCol, $_eventDateCol, $_eventTimeCol) "
+          "values "
+          "('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
+          "('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
+          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
+          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
+          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
+          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
+          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
+          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
+          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
+          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
+          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
+          " ('اجتماع اللجنة', '1-1-2019', '11:00 am')");
     });
     return database;
   }
 
-  //CRUD operation methods
   //category table
-  //insert
-  Future<int> insertCategory(category) async {
-    Database database = await this.database;
-    var result = await database.insert(_categoryTable, category.toMap());
-    return result;
-  }
-
   //select
   selectCategories() async {
     Database database = await this.database;
@@ -90,28 +107,27 @@ class DatabaseHelper {
     return list;
   }
 
-  //delete
-  Future<int> deleteCategory() async {
-    Database database = await this.database;
-    var result = await database.delete(_categoryTable);
-    return result;
-  }
-
   //entity table
-  //insert
-  insertEntity(entity) async {
+  //select
+  selectEntities() async {
     Database database = await this.database;
-    database.insert(_entityTable, entity.toMap());
-  }
-
-  //select event method
-  selectEntity() async {
-    Database database = await this.database;
-    var mapList =
-        await database.query(_eventTable, orderBy: "$_entityRankCol asc");
+    var mapList = await database.rawQuery(
+        "SELECT * FROM 'entity' order by $_entityCategoryIdCol asc, $_entityRankCol asc");
     var list = List<Entity>();
     for (int index = 0; index < mapList.length; index++)
       list.add(Entity.fromMap(mapList[index]));
+    return list;
+  }
+
+  //event table
+  //select event method
+  selectEvents() async {
+    Database database = await this.database;
+    var mapList =
+        await database.query(_eventTable, orderBy: "$_eventIdCol asc");
+    var list = List<Event>();
+    for (int index = 0; index < mapList.length; index++)
+      list.add(Event.fromMap(mapList[index]));
     return list;
   }
 }
