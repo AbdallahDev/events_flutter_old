@@ -46,25 +46,41 @@ class DatabaseHelper {
     var path = directory.path + "notes.db";
     Database database =
         await openDatabase(path, version: 1, onCreate: (db, version) {
+      //category table code
       //this method to create the category table
       db.execute(
           "create table $_categoryTable($_categoryIdCol integer primary key autoincrement, "
           "$_categoryNameCol text)");
       //bellow i'll insert values in the category table
-      db.execute(
-          "insert into $_categoryTable ($_categoryNameCol) values('مكتب دائم'), ('مكتب تنفيذي'),"
-          " ('كتل'),  ('لجان دائمة'), ('لجان اخوة'), ('لجان صداقة')");
+      db.execute("insert into $_categoryTable ($_categoryNameCol) values "
+          "('مكتب دائم'), "
+          "('مكتب تنفيذي'), "
+          " ('كتل'), "
+          "('لجان دائمة'), "
+          "('لجان اخوة'), "
+          "('لجان صداقة')");
 
+      //entity table code
       //this method to create the entity table
       db.execute(
           "create table $_entityTable($_entityIdCol integer primary key autoincrement, "
           "$_entityNameCol text, $_entityCategoryIdCol integer, $_entityRankCol integer)");
-
       //bellow i'll insert values in the entity table
       db.execute(
           "insert into $_entityTable ($_entityNameCol, $_entityCategoryIdCol, $_entityRankCol) "
-          "values ('جميع الجهات',1,1), ('اللجنة القانونية',1,1), ('اللجنة المالية',1,2), ('لجنة الاقتصاد والاستثمار',1,3), ('كتلة التجديد',2,1), ('كتلة الوفاء والعهد',2,2), ('كتلة العدالة',2,3), ('لجنة الاخوة الاردنية الاماراتية',3,1), ('لجنة الاخوة البرلمانية الاردنية اللبنانية',3,2), ('لجنة الاخوة الاردنية القطرية',3,4)");
+          "values "
+          "('كتلة التجديد',3, 1),"
+          "('كتلة الوفاء والعهد',3, 2),"
+          "('كتلة العدالة',3, 3),"
+          "('جميع الجهات',1,4), "
+          "('اللجنة القانونية', 4, 1),"
+          "('اللجنة المالية',4, 2),"
+          "('لجنة الاقتصاد والاستثمار',4, 3),"
+          "('لجنة الاخوة الاردنية الاماراتية',5, 1),"
+          "('لجنة الاخوة البرلمانية الاردنية اللبنانية',5, 2),"
+          "('لجنة الاخوة الاردنية القطرية', 5, 4)");
 
+      //entity table code
       //this method to create the event_entity table
       db.execute(
           "create table $_eventEntityTable($_eventEntityEventIdCol integer, "
@@ -109,10 +125,11 @@ class DatabaseHelper {
 
   //entity table
   //select
-  selectEntities() async {
+  selectEntities(int categoryId) async {
     Database database = await this.database;
     var mapList = await database.rawQuery(
-        "SELECT * FROM 'entity' order by $_entityCategoryIdCol asc, $_entityRankCol asc");
+        "SELECT * FROM $_entityTable where $_entityCategoryIdCol = $categoryId "
+        "order by $_entityRankCol asc");
     var list = List<Entity>();
     for (int index = 0; index < mapList.length; index++)
       list.add(Entity.fromMap(mapList[index]));
