@@ -5,8 +5,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
-//test comment again---------------------------------------------------------------
-
 class DatabaseHelper {
   static final DatabaseHelper databaseHelper = DatabaseHelper.createInstance();
   static Database _database;
