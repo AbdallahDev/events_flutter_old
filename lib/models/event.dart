@@ -3,9 +3,10 @@ class Event {
   String subject;
   String date;
   String time;
+  String entityName;
 
   //this constructor to create the event obj
-  Event(this.subject, this.date, this.time);
+  Event(this.subject, this.date, this.time, this.entityName);
 
   //this method to convert the event obj to map obj to save it in the db
   toMap() {
@@ -24,5 +25,6 @@ class Event {
     subject = map['subject'];
     date = map['date'];
     time = map['time'];
+    entityName = map['name'];
   }
 }

@@ -9,29 +9,29 @@ class DatabaseHelper {
   static final DatabaseHelper databaseHelper = DatabaseHelper.createInstance();
   static Database _database;
 
-  //category table and its rows names
+  //categories table and its rows names
   String _categoryTable = "categories";
   String _categoryIdCol = "id";
   String _categoryNameCol = "name";
 
-  //entity table and its rows names
+  //entities table and its rows names
   String _entityTable = "entities";
   String _entityIdCol = "id";
   String _entityNameCol = "name";
   String _entityRankCol = "rank";
   String _entityCategoryIdCol = "category_id";
 
-  //event table and its rows names
+  //events table and its rows names
   String _eventTable = "events";
   String _eventIdCol = "id";
   String _eventSubjectCol = "subject";
   String _eventDateCol = "date";
   String _eventTimeCol = "time";
 
-  //event_entity table and its rows names
-  String _eventEntityTable = "events_entities";
-  String _eventEntityEventIdCol = "event_id";
-  String _eventEntityEntityIdCol = "entity_id";
+  //events_entities table and its rows names
+  String _eventsEntitiesTable = "events_entities";
+  String _eventsEntitiesEventIdCol = "event_id";
+  String _eventsEntitiesEntityIdCol = "entity_id";
 
   DatabaseHelper.createInstance();
 
@@ -69,6 +69,8 @@ class DatabaseHelper {
       db.execute(
           "insert into $_entityTable ($_entityNameCol, $_entityCategoryIdCol, $_entityRankCol) "
           "values "
+          "('المكتب الدائم',1, 1),"
+          "('المكتب التنفيذي',2, 1),"
           "('كتلة مبادرة النيابية',3, 1),"
           "('كتلة وطن النيابية',3, 2),"
           "('كتلة الشعب النيابية',3, 3),"
@@ -77,13 +79,7 @@ class DatabaseHelper {
           "('لجنة الاقتصاد والاستثمار',4, 3),"
           "('لجنة الاخوة الاردنية الاماراتية',5, 1),"
           "('لجنة الاخوة البرلمانية الاردنية اللبنانية',5, 2),"
-          "('لجنة الاخوة الاردنية القطرية', 5, 4)");
-
-      //entity table code
-      //this method to create the event_entity table
-      db.execute(
-          "create table $_eventEntityTable($_eventEntityEventIdCol integer, "
-          "$_eventEntityEntityIdCol integer)");
+          "('لجنة الاخوة الاردنية القطرية', 5, 3)");
 
       //events table
       //this method to create the events table
@@ -98,8 +94,10 @@ class DatabaseHelper {
           "('يجتمع المكتب الدائم لمجلس النواب يوم الاربعاء 2017/4/12 الساعة 12:00 ظهراً.', '2017/4/12', '12:00 م'),"
           "('يجتمع المكتب الدائم لمجلس النواب يوم الاثنين 6 /3 /2017 الساعة 11:00 صباحاً.', '6 /3 /2017', '11:00 م'),"
           "('قرر سعادة المهندس عاطف الطراونة رئيس مجلس النواب دعوة المكتب التنفيذي للاجتماع يوم الاربعاء 17/2/2016 الساعة 12:30 ظهرا في قاعة المكتب الدائم.', '17/2/2016', '12:30 م'),"
+          //entity id 3
           "('اجتماع كتلة مبادرة النيابية لبحث امور تهم الكتلة.', 'الأربعاء, فبراير 6, 2019', '12:00 م'),"
           "('زيارة كتلة مبادرة النيابية لديوان الخدمة المدنية.', 'الثلاثاء, يناير 15, 2019', '11:00 ص'),"
+          //entity id 4
           "('زيارة كتلة وطن النيابية الى مديرية الامن العام .', 'الثلاثاء, يناير 29, 2019', '10:30 ص'),"
           "('زيارة كتلة وطن النيابية الى قناة المملكة للاطلاع على الخطط المستقبلية للقناة .', 'الأربعاء, يناير 23, 2019', '11:30 ص'),"
           "('اجتماع كتلة الشعب النيابية لبحث موضوع الكتل البرلمانية مع مركز الدراسات والبحوث التشريعية.', 'الثلاثاء, يناير 15, 2019', '11:00 ص'),"
@@ -120,7 +118,26 @@ class DatabaseHelper {
           "('لجنة الاخوة البرلمانية الاردنية اللبنانية تلتقي بوفد نيابي من لبنان', 'الاحد, مارس 10, 2015', '04:00 م'),"
           "('لجنة الاخوة البرلمانية الاردنية اللبنانية تلتقي برئيس مجلس النواب اللبناني', 'الاربعاء, يناير 17, 2016', '07:00 م'),"
           "('لجنة الاخوة الاردنية القطرية تلتقي بوفد برلماني من دولة قطر الشقيقة', 'الخميس, مايو 22, 2018', '08:00 م'),"
-          "('لجنة الاخوة الاردنية القطرية تلتقي برئيس مجلس النواب القطري', 'الاحد, مايو 11, 2018', '03:00 م')");
+          "('لجنة الاخوة الاردنية القطرية تلتقي برئيس مجلس النواب القطري', 'الاحد, مايو 11, 2018', '03:00 م')"
+          "");
+
+      //events entities table
+      //this method to create the events entities table
+      db.execute("create table $_eventsEntitiesTable("
+          "$_eventsEntitiesEventIdCol integer, "
+          "$_eventsEntitiesEntityIdCol integer)");
+      //bellow i'll insert values in the events entities table
+      db.execute("insert into $_eventsEntitiesTable ("
+          "$_eventsEntitiesEventIdCol, "
+          "$_eventsEntitiesEntityIdCol) "
+          "values "
+          "(1, 1),"
+          "(2, 1),"
+          "(3, 1),"
+          "(4, 2),"
+          "(5, 3),"
+          "(6, 3)"
+          "");
     });
     return database;
   }
@@ -154,11 +171,38 @@ class DatabaseHelper {
   //select event method
   selectEvents() async {
     Database database = await this.database;
-    var mapList =
-        await database.query(_eventTable, orderBy: "$_eventIdCol asc");
+    var mapList = await database.rawQuery(
+        "select $_eventTable.$_eventIdCol, $_eventTable.$_eventSubjectCol, "
+        "$_eventTable.$_eventDateCol, $_eventTable.$_eventTimeCol, "
+        "$_entityTable.$_entityNameCol "
+        "from $_eventTable "
+        "INNER JOIN $_eventsEntitiesTable on "
+        "$_eventTable.$_eventIdCol = $_eventsEntitiesTable.$_eventsEntitiesEventIdCol "
+        "INNER JOIN $_entityTable on "
+        "$_entityTable.$_entityIdCol = $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol "
+        "where $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol = 1"
+        "");
     var list = List<Event>();
     for (int index = 0; index < mapList.length; index++)
       list.add(Event.fromMap(mapList[index]));
     return list;
+  }
+
+
+  selectTest() async {
+    Database database = await this.database;
+    var mapList = await database.rawQuery(
+        "select $_eventTable.$_eventIdCol, $_eventTable.$_eventSubjectCol, "
+            "$_eventTable.$_eventDateCol, $_eventTable.$_eventTimeCol, "
+            "$_entityTable.$_entityNameCol "
+            "from $_eventTable "
+            "INNER JOIN $_eventsEntitiesTable on "
+            "$_eventTable.$_eventIdCol = $_eventsEntitiesTable.$_eventsEntitiesEventIdCol "
+            "INNER JOIN $_entityTable on "
+            "$_entityTable.$_entityIdCol = $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol "
+            "where $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol = 1"
+            "");
+
+    return mapList;
   }
 }

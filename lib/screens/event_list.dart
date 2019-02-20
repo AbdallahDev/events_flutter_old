@@ -237,7 +237,7 @@ class _EventListState extends State<EventList> {
                             ),
                             _getContainer(),
                             Text(
-                              _eventList[index].id.toString(),
+                              _eventList[index].entityName,
                               style: _regularText,
                             ),
                           ],
@@ -255,7 +255,7 @@ class _EventListState extends State<EventList> {
                                 child: Text(
                               _eventList[index].subject,
                               style: _regularText,
-                                  textAlign: TextAlign.right,
+                              textAlign: TextAlign.right,
                             )),
                           ],
                         ),
