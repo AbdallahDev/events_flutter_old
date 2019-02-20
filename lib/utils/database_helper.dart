@@ -86,27 +86,19 @@ class DatabaseHelper {
           "create table $_eventEntityTable($_eventEntityEventIdCol integer, "
           "$_eventEntityEntityIdCol integer)");
 
-      //this method to create the event table
+      //events table
+      //this method to create the events table
       db.execute(
           "create table $_eventTable($_eventIdCol integer primary key autoincrement, "
           "$_eventSubjectCol text, $_eventDateCol text, $_eventTimeCol text)");
-
-      //bellow i'll insert values in the event table
+      //bellow i'll insert values in the events table
       db.execute(
           "insert into $_eventTable ($_eventSubjectCol, $_eventDateCol, $_eventTimeCol) "
           "values "
-          "('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
-          "('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
-          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
-          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
-          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
-          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
-          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
-          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
-          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
-          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
-          " ('اجتماع اللجنة', '1-1-2019', '11:00 am'),"
-          " ('اجتماع اللجنة', '1-1-2019', '11:00 am')");
+              "('يجتمع المكتب الدائم لمجلس النواب يوم الأربعاء 2017/8/9 الساعة 1:00 بعد الظهر.', '2017/8/9', '1:00 م'),"
+              "('يجتمع المكتب الدائم لمجلس النواب يوم الاربعاء 2017/4/12 الساعة 12:00 ظهراً.', '2017/4/12', '12:00 م'),"
+              "('يجتمع المكتب الدائم لمجلس النواب يوم الاثنين 6 /3 /2017 الساعة 11:00 صباحاً.', '6 /3 /2017', '11:00 م'),"
+              "('قرر سعادة المهندس عاطف الطراونة رئيس مجلس النواب دعوة المكتب التنفيذي للاجتماع يوم الاربعاء 17/2/2016 الساعة 12:30 ظهرا في قاعة المكتب الدائم.', '17/2/2016', '12:30 م')");
     });
     return database;
   }

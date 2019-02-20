@@ -251,10 +251,12 @@ class _EventListState extends State<EventList> {
                               style: _boldText,
                             ),
                             _getContainer(),
-                            Text(
+                            Expanded(
+                                child: Text(
                               _eventList[index].subject,
                               style: _regularText,
-                            ),
+                                  textAlign: TextAlign.right,
+                            )),
                           ],
                         ),
                         Row(
