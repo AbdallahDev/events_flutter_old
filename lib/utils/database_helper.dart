@@ -10,26 +10,26 @@ class DatabaseHelper {
   static Database _database;
 
   //category table and its rows names
-  String _categoryTable = "category";
+  String _categoryTable = "categories";
   String _categoryIdCol = "id";
   String _categoryNameCol = "name";
 
   //entity table and its rows names
-  String _entityTable = "entity";
+  String _entityTable = "entities";
   String _entityIdCol = "id";
   String _entityNameCol = "name";
   String _entityRankCol = "rank";
   String _entityCategoryIdCol = "category_id";
 
   //event table and its rows names
-  String _eventTable = "event";
+  String _eventTable = "events";
   String _eventIdCol = "id";
   String _eventSubjectCol = "subject";
   String _eventDateCol = "date";
   String _eventTimeCol = "time";
 
   //event_entity table and its rows names
-  String _eventEntityTable = "event_entity";
+  String _eventEntityTable = "events_entities";
   String _eventEntityEventIdCol = "event_id";
   String _eventEntityEntityIdCol = "entity_id";
 
