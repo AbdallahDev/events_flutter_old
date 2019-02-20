@@ -33,8 +33,6 @@ class DatabaseHelper {
   String _eventEntityEventIdCol = "event_id";
   String _eventEntityEntityIdCol = "entity_id";
 
-  //
-
   DatabaseHelper.createInstance();
 
   get database async {
