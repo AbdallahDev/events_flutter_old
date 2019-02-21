@@ -125,6 +125,19 @@ class _EventListState extends State<EventList> {
     return image;
   }
 
+  //this method will fill the categories dropDownButton with category from
+  //the local db.
+  _fillCategoriesDropDownButton() async {
+    //fill the temporary category list with categories objects.
+    List<Category> categoryList = await _databaseHelper.selectCategories();
+
+    //fill the _categoryList with category ids and names
+    for (int index = 0; index < categoryList.length; index++) {
+      _categoryList.add(
+          {"id": categoryList[index].id, "name": categoryList[index].name});
+    }
+  }
+
   //this method will get the categories dropDownButton
   _getCategoriesDropDownButton() {
     return DropdownButton<int>(
@@ -152,17 +165,32 @@ class _EventListState extends State<EventList> {
     );
   }
 
-  //this method will fill the categories dropDownButton with category from
+  //this method will fill the entities dropDownButton with entities from
   //the local db.
-  _fillCategoriesDropDownButton() async {
-    //fill the temporary category list with categories objects.
-    List<Category> categoryList = await _databaseHelper.selectCategories();
+  _fillEntitiesDropDownButton() async {
+    //fill the temporary entity list with entity objects.
+    List<Entity> entityListSelected =
+    await _databaseHelper.selectEntities(_selectedCategoryId);
 
-    //fill the _categoryList with category ids and names
-    for (int index = 0; index < categoryList.length; index++) {
-      _categoryList.add(
-          {"id": categoryList[index].id, "name": categoryList[index].name});
+    //bellow i'll create temporary list to fill it from the one selected from
+    // the db
+    List<Map> entityList = [
+      {"id": 0, "name": "جميع الجهات"}
+    ];
+    //here i'll add to the list the first default value so it can appear as
+    // a first choice in the dropDownButton
+    for (int index = 0; index < entityListSelected.length; index++) {
+      entityList.add({
+        "id": entityListSelected[index].id,
+        "name": entityListSelected[index].name
+      });
     }
+    //bellow i'll call the setState function to refill the _entityList with
+    //the entity ids and names, and by that the entityDropDownButton will be
+    // filled with the new values
+    setState(() {
+      _entityList = entityList;
+    });
   }
 
   //this method will get the entities dropDownButton
@@ -198,31 +226,13 @@ class _EventListState extends State<EventList> {
     }
   }
 
-  //this method will fill the entities dropDownButton with entities from
-  //the local db.
-  _fillEntitiesDropDownButton() async {
-    //fill the temporary entity list with entity objects.
-    List<Entity> entityListSelected =
-        await _databaseHelper.selectEntities(_selectedCategoryId);
-
-    //bellow i'll create temporary list to fill it from the one selected from
-    // the db
-    List<Map> entityList = [
-      {"id": 0, "name": "جميع الجهات"}
-    ];
-    //here i'll add to the list the first default value so it can appear as
-    // a first choice in the dropDownButton
-    for (int index = 0; index < entityListSelected.length; index++) {
-      entityList.add({
-        "id": entityListSelected[index].id,
-        "name": entityListSelected[index].name
-      });
-    }
-    //bellow i'll call the setState function to refill the _entityList with
-    //the entity ids and names, and by that the entityDropDownButton will be
-    // filled with the new values
+  //this method will fill the eventList entities from the local db.
+  _fillEventList() async {
+    List<Event> eventList =
+    await _databaseHelper.selectEvents(_selectedEntityId);
     setState(() {
-      _entityList = entityList;
+      _eventList = eventList;
+      _listCount = eventList.length;
     });
   }
 
@@ -311,16 +321,6 @@ class _EventListState extends State<EventList> {
         },
       ),
     );
-  }
-
-  //this method will fill the eventList entities from the local db.
-  _fillEventList() async {
-    List<Event> eventList =
-        await _databaseHelper.selectEvents(_selectedEntityId);
-    setState(() {
-      _eventList = eventList;
-      _listCount = eventList.length;
-    });
   }
 
   //this method will return a container to make a space between widgets
