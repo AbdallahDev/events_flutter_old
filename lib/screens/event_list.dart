@@ -1,4 +1,5 @@
 import 'package:events_flutter/models/category.dart';
+import 'package:events_flutter/models/entity.dart';
 import 'package:events_flutter/models/event.dart';
 import 'package:flutter/material.dart';
 import 'package:events_flutter/utils/database_helper.dart';
@@ -28,8 +29,8 @@ class _EventListState extends State<EventList> {
   static final DatabaseHelper _databaseHelper = DatabaseHelper.createInstance();
   List<Map> _categoryList = List<Map>();
   int _selectedCategoryId;
-  List<String> _entityNames = List<String>();
-  var _selectedEntity;
+  List<Map> _entityList = List<Map>();
+  int _selectedEntityId;
   List<Event> _eventList = List<Event>();
   var _listCount;
 
@@ -43,9 +44,15 @@ class _EventListState extends State<EventList> {
       {"id": 0, "name": "جميع الفئات"}
     ];
     _selectedCategoryId = 0;
-    //i've initialized this var so the app first launch won't give error
-    _entityNames.add("جميع الجهات");
-    _selectedEntity = _entityNames[0];
+
+    //i've initialized this var so the app when first launch won't give an error
+    //and by that i can show the "جميع الجهات" word as the first choice in the
+    //dropDownButton
+    _entityList = [
+      {"id": 0, "name": "جميع الجهات"}
+    ];
+    _selectedEntityId = 0;
+
     //i've initialized this var so the app first launch won't give error
     _listCount = 0;
   }
@@ -58,7 +65,6 @@ class _EventListState extends State<EventList> {
     // state of the widget changes
     if (_categoryList.length == 1) {
       _fillCategoriesDropDownButton();
-      _fillEntitiesDropDownButton();
       _fillEventList();
     }
 
@@ -138,7 +144,8 @@ class _EventListState extends State<EventList> {
       onChanged: (value) {
         setState(() {
           _selectedCategoryId = value;
-          _fillEntitiesDropDownButton();
+          if (value != 0 && value != 1 && value != 2)
+            _fillEntitiesDropDownButton();
         });
       },
       isExpanded: true,
@@ -167,23 +174,23 @@ class _EventListState extends State<EventList> {
     if (_selectedCategoryId != 0 &&
         _selectedCategoryId != 1 &&
         _selectedCategoryId != 2) {
-      return DropdownButton<String>(
-        items: _entityNames.map((String item) {
-          return DropdownMenuItem<String>(
+      return DropdownButton<int>(
+        items: _entityList.map((Map item) {
+          return DropdownMenuItem<int>(
             child: Container(
               child: Text(
-                item,
+                item["name"],
                 style: _regularText,
               ),
               alignment: Alignment(0.95, 0.0),
             ),
-            value: item,
+            value: item["id"],
           );
         }).toList(),
-        value: _selectedEntity,
+        value: _selectedEntityId,
         onChanged: (value) {
           setState(() {
-            _selectedEntity = value;
+            _selectedEntityId = value;
           });
         },
         isExpanded: true,
@@ -195,21 +202,28 @@ class _EventListState extends State<EventList> {
   //the local db.
   _fillEntitiesDropDownButton() async {
     //fill the temporary entity list with entity objects.
-    var entityList = await _databaseHelper.selectEntities(_selectedCategoryId);
+    List<Entity> entityListSelected =
+        await _databaseHelper.selectEntities(_selectedCategoryId);
 
-    //fill the temporary list with entity names
-    var entityNames = List<String>();
-    entityNames.add("جميع الجهات");
-    for (int index = 0; index < entityList.length; index++) {
-      entityNames.add(entityList[index].name);
+    //bellow i'll create temporary list to fill it from the one selected from
+    // the db
+    List<Map> entityList = [
+      {"id": 0, "name": "جميع الجهات"}
+    ];
+    //here i'll add to the list the first default value so it can appear as
+    // a first choice in the dropDownButton
+    for (int index = 0; index < entityListSelected.length; index++) {
+      entityList.add({
+        "id": entityListSelected[index].id,
+        "name": entityListSelected[index].name
+      });
     }
-
-    //create instance for the _categoryNames list
+    //bellow i'll call the setState function to refill the _entityList with
+    //the entity ids and names, and by that the entityDropDownButton will be
+    // filled with the new values
     setState(() {
-      _entityNames = entityNames;
+      _entityList = entityList;
     });
-
-    debugPrint(_entityNames.toString());
   }
 
   //this method will get the list filled with events
@@ -301,7 +315,8 @@ class _EventListState extends State<EventList> {
 
   //this method will fill the eventList entities from the local db.
   _fillEventList() async {
-    List<Event> eventList = await _databaseHelper.selectEvents(_selectedEntity);
+    List<Event> eventList =
+        await _databaseHelper.selectEvents(_selectedEntityId);
     setState(() {
       _eventList = eventList;
       _listCount = eventList.length;
