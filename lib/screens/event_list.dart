@@ -216,7 +216,7 @@ class _EventListState extends State<EventList> {
   //this method will get the list filled with events
   _getEventList() {
     return Container(
-      height: 390,
+      height: 445,
       child: ListView.builder(
         itemCount: _listCount,
         itemBuilder: (BuildContext context, int index) {
@@ -232,7 +232,7 @@ class _EventListState extends State<EventList> {
                           children: <Widget>[
                             //title
                             Text(
-                              ":اللــجـــنة",
+                              ":الــجـهـــة",
                               style: _boldText,
                             ),
                             _getContainer(),
@@ -271,6 +271,22 @@ class _EventListState extends State<EventList> {
                             Text(
                               _eventList[index].date,
                               style: _regularText,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          textDirection: TextDirection.rtl,
+                          children: <Widget>[
+                            //title
+                            Text(
+                              ":الــوقــــت",
+                              style: _boldText,
+                            ),
+                            _getContainer(),
+                            Text(
+                              _eventList[index].time,
+                              style: _regularText,
+                              textDirection: TextDirection.rtl,
                             ),
                           ],
                         ),
