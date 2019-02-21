@@ -1,5 +1,4 @@
 import 'package:events_flutter/models/category.dart';
-import 'package:events_flutter/models/entity.dart';
 import 'package:events_flutter/models/event.dart';
 import 'package:flutter/material.dart';
 import 'package:events_flutter/utils/database_helper.dart';
@@ -302,7 +301,7 @@ class _EventListState extends State<EventList> {
 
   //this method will fill the eventList entities from the local db.
   _fillEventList() async {
-    List<Event> eventList = await _databaseHelper.selectEvents();
+    List<Event> eventList = await _databaseHelper.selectEvents(_selectedEntity);
     setState(() {
       _eventList = eventList;
       _listCount = eventList.length;

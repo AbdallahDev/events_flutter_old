@@ -197,7 +197,7 @@ class DatabaseHelper {
 
   //event table
   //select event method
-  selectEvents() async {
+  selectEvents(int entityId) async {
     Database database = await this.database;
     var mapList = await database.rawQuery(
         "select $_eventTable.$_eventIdCol, $_eventTable.$_eventSubjectCol, "
@@ -208,7 +208,7 @@ class DatabaseHelper {
         "$_eventTable.$_eventIdCol = $_eventsEntitiesTable.$_eventsEntitiesEventIdCol "
         "INNER JOIN $_entityTable on "
         "$_entityTable.$_entityIdCol = $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol "
-//        "where $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol = 1"
+        "where $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol = $entityId"
         "");
     var list = List<Event>();
     for (int index = 0; index < mapList.length; index++)
