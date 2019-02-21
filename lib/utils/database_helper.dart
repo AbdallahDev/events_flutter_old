@@ -199,17 +199,35 @@ class DatabaseHelper {
   //select event method
   selectEvents(int entityId) async {
     Database database = await this.database;
-    var mapList = await database.rawQuery(
-        "select $_eventTable.$_eventIdCol, $_eventTable.$_eventSubjectCol, "
-        "$_eventTable.$_eventDateCol, $_eventTable.$_eventTimeCol, "
-        "$_entityTable.$_entityNameCol "
-        "from $_eventTable "
-        "INNER JOIN $_eventsEntitiesTable on "
-        "$_eventTable.$_eventIdCol = $_eventsEntitiesTable.$_eventsEntitiesEventIdCol "
-        "INNER JOIN $_entityTable on "
-        "$_entityTable.$_entityIdCol = $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol "
-        "where $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol = $entityId"
-        "");
+    var mapList;
+    //bellow i'll check if the category id is zero, coz zero dosen't belong to
+    // any category it just represent all the categories, so in that case i'll
+    // fetch all the events, other than that i'll get the events that belong to
+    // specific category
+    if (entityId == 0) {
+      mapList = await database.rawQuery(
+          "select $_eventTable.$_eventIdCol, $_eventTable.$_eventSubjectCol, "
+          "$_eventTable.$_eventDateCol, $_eventTable.$_eventTimeCol, "
+          "$_entityTable.$_entityNameCol "
+          "from $_eventTable "
+          "INNER JOIN $_eventsEntitiesTable on "
+          "$_eventTable.$_eventIdCol = $_eventsEntitiesTable.$_eventsEntitiesEventIdCol "
+          "INNER JOIN $_entityTable on "
+          "$_entityTable.$_entityIdCol = $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol "
+          "");
+    } else {
+      mapList = await database.rawQuery(
+          "select $_eventTable.$_eventIdCol, $_eventTable.$_eventSubjectCol, "
+          "$_eventTable.$_eventDateCol, $_eventTable.$_eventTimeCol, "
+          "$_entityTable.$_entityNameCol "
+          "from $_eventTable "
+          "INNER JOIN $_eventsEntitiesTable on "
+          "$_eventTable.$_eventIdCol = $_eventsEntitiesTable.$_eventsEntitiesEventIdCol "
+          "INNER JOIN $_entityTable on "
+          "$_entityTable.$_entityIdCol = $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol "
+          "where $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol = $entityId"
+          "");
+    }
     var list = List<Event>();
     for (int index = 0; index < mapList.length; index++)
       list.add(Event.fromMap(mapList[index]));
