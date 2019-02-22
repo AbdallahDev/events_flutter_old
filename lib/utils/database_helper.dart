@@ -183,12 +183,23 @@ class DatabaseHelper {
   }
 
   //entity table
-  //select
-  selectEntities(int categoryId) async {
+  //select method, this method takes two parameters, one is the categoryId to get
+  // the entities belong to the selected category, and the other one is the
+  // actionIndex that by it
+  // i'll decide to make the logic to return the entities as a list for the
+  // entities dropDownButton, or as a map list for the select events method.
+  selectEntities(int categoryId,int actionIndex) async {
     Database database = await this.database;
     var mapList = await database.rawQuery(
         "SELECT * FROM $_entityTable where $_entityCategoryIdCol = $categoryId "
         "order by $_entityRankCol asc");
+    //here i'll check for the actionIndex if it's equal 1, because that means that
+    // this method has been called from the select events method, and i should
+    // return a map list of entity ids.
+    if(actionIndex == 1){
+      mapList = await database.rawQuery(
+          "SELECT $_entityIdCol FROM $_entityTable where $_entityCategoryIdCol = $categoryId ");
+      return mapList;}
     var list = List<Entity>();
     for (int index = 0; index < mapList.length; index++)
       list.add(Entity.fromMap(mapList[index]));
@@ -196,38 +207,29 @@ class DatabaseHelper {
   }
 
   //event table
-  //select event method
-  selectEvents(int entityId) async {
+  //select event method, in this method i'll return all events that belong to
+  // a whole category based on the provide categoryId.
+  selectEvents(int categoryId) async {
+    String sql =
+        "select $_eventTable.$_eventIdCol, $_eventTable.$_eventSubjectCol, "
+        "$_eventTable.$_eventDateCol, $_eventTable.$_eventTimeCol, "
+        "$_entityTable.$_entityNameCol "
+        "from $_eventTable "
+        "INNER JOIN $_eventsEntitiesTable on "
+        "$_eventTable.$_eventIdCol = $_eventsEntitiesTable.$_eventsEntitiesEventIdCol "
+        "INNER JOIN $_entityTable on "
+        "$_entityTable.$_entityIdCol = $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol "
+        ;
+   //this list contains a map objects of entity ids
+    List<Map<String,dynamic>> entityIds = await selectEntities(categoryId,1);
+   //i'll loop over the entity ids to form the sql statement, where i'll insert
+    // the where conditions based on the number of entity ids
+   for(int i=0; i <entityIds.length;i++){
+     if(i == 0)     sql= sql + " where $_entityTable.$_entityIdCol =  ${entityIds[i].values}";
+     sql= sql + " or $_entityTable.$_entityIdCol =  ${entityIds[i].values}";
+   }
     Database database = await this.database;
-    var mapList;
-    //bellow i'll check if the category id is zero, coz zero dosen't belong to
-    // any category it just represent all the categories, so in that case i'll
-    // fetch all the events, other than that i'll get the events that belong to
-    // specific category
-    if (entityId == 0) {
-      mapList = await database.rawQuery(
-          "select $_eventTable.$_eventIdCol, $_eventTable.$_eventSubjectCol, "
-          "$_eventTable.$_eventDateCol, $_eventTable.$_eventTimeCol, "
-          "$_entityTable.$_entityNameCol "
-          "from $_eventTable "
-          "INNER JOIN $_eventsEntitiesTable on "
-          "$_eventTable.$_eventIdCol = $_eventsEntitiesTable.$_eventsEntitiesEventIdCol "
-          "INNER JOIN $_entityTable on "
-          "$_entityTable.$_entityIdCol = $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol "
-          "");
-    } else {
-      mapList = await database.rawQuery(
-          "select $_eventTable.$_eventIdCol, $_eventTable.$_eventSubjectCol, "
-          "$_eventTable.$_eventDateCol, $_eventTable.$_eventTimeCol, "
-          "$_entityTable.$_entityNameCol "
-          "from $_eventTable "
-          "INNER JOIN $_eventsEntitiesTable on "
-          "$_eventTable.$_eventIdCol = $_eventsEntitiesTable.$_eventsEntitiesEventIdCol "
-          "INNER JOIN $_entityTable on "
-          "$_entityTable.$_entityIdCol = $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol "
-          "where $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol = $entityId"
-          "");
-    }
+    var mapList = await database.rawQuery(sql);
     var list = List<Event>();
     for (int index = 0; index < mapList.length; index++)
       list.add(Event.fromMap(mapList[index]));

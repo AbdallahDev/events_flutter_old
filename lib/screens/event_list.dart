@@ -154,11 +154,15 @@ class _EventListState extends State<EventList> {
         );
       }).toList(),
       value: _selectedCategoryId,
-      onChanged: (value) {
+      onChanged: (selectedCategoryId) {
         setState(() {
-          _selectedCategoryId = value;
-          if (value != 0 && value != 1 && value != 2)
+          _selectedCategoryId = selectedCategoryId;
+          //bellow i'll check if the selectedCategoryId is not 0,1 or 2,
+          // because in that case i don't want to show the entities dropDownButton,
+          // coz it's not needed.
+          if (selectedCategoryId != 0 && selectedCategoryId != 1 && selectedCategoryId != 2)
             _fillEntitiesDropDownButton();
+          _fillEventList();
         });
       },
       isExpanded: true,
@@ -170,7 +174,7 @@ class _EventListState extends State<EventList> {
   _fillEntitiesDropDownButton() async {
     //fill the temporary entity list with entity objects.
     List<Entity> entityListSelected =
-    await _databaseHelper.selectEntities(_selectedCategoryId);
+    await _databaseHelper.selectEntities(_selectedCategoryId, 0);
 
     //bellow i'll create temporary list to fill it from the one selected from
     // the db
@@ -229,7 +233,7 @@ class _EventListState extends State<EventList> {
   //this method will fill the eventList entities from the local db.
   _fillEventList() async {
     List<Event> eventList =
-    await _databaseHelper.selectEvents(_selectedEntityId);
+    await _databaseHelper.selectEvents(_selectedCategoryId);
     setState(() {
       _eventList = eventList;
       _listCount = eventList.length;
