@@ -223,17 +223,18 @@ class DatabaseHelper {
     //bellow i'll check if the user choose one of the categories, and didn't
     // select the first choice "جميع الفئات" in the categories dropDownButton,
     // by checking the category id if it's not equal to zero.
-    if(categoryId != 0){
+    if (categoryId != 0) {
       //this list contains a map objects of entity ids
-      List<Map<String, dynamic>> entityIds = await selectEntities(categoryId, 1);
-        //i'll loop over the entity ids to form the sql statement, where i'll insert
-        // the where conditions based on the number of entity ids
-        for (int i = 0; i < entityIds.length; i++) {
-          if (i == 0)
-            sql = sql +
-                " where $_entityTable.$_entityIdCol =  ${entityIds[i].values}";
-          sql = sql + " or $_entityTable.$_entityIdCol =  ${entityIds[i].values}";
-        }
+      List<Map<String, dynamic>> entityIds =
+          await selectEntities(categoryId, 1);
+      //i'll loop over the entity ids to form the sql statement, where i'll insert
+      // the where conditions based on the number of entity ids
+      for (int i = 0; i < entityIds.length; i++) {
+        if (i == 0)
+          sql = sql +
+              " where $_entityTable.$_entityIdCol =  ${entityIds[i].values}";
+        sql = sql + " or $_entityTable.$_entityIdCol =  ${entityIds[i].values}";
+      }
     }
     Database database = await this.database;
     var mapList = await database.rawQuery(sql);
