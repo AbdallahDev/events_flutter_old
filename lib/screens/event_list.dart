@@ -200,6 +200,14 @@ class _EventListState extends State<EventList> {
 
   //this method will get the entities dropDownButton
   _getEntitiesDropDownButton() {
+    //here i reset the value of the _selectedEntityId var to 0, coz if the user
+    // choose an entity form the entity list the _selectedEntityId value will be
+    // the id of that chosen entity, and when he want to select another category
+    // the entity dropdownButton will crash coz the value of it is the id of an
+    // entity that is not exist in this current category but in the last category,
+    // so when i reset it to 0 by that i make sure the id is for an entity exist
+    // in this category and all the categories and that is the first entity "جميع الجهات".
+    _selectedEntityId = 0;
     //here i'll check if there is no specific category selected,
     // or the "مكتب دائم"
     // or the "مكتب تنفيذي" categories selected
@@ -245,7 +253,7 @@ class _EventListState extends State<EventList> {
   //this method will get the list filled with events
   _getEventList() {
     return Container(
-      height: 445,
+      height: 370,
       child: ListView.builder(
         itemCount: _listCount,
         itemBuilder: (BuildContext context, int index) {
