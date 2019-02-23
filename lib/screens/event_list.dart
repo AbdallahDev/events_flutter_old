@@ -65,7 +65,7 @@ class _EventListState extends State<EventList> {
     // state of the widget changes
     if (_categoryList.length == 1) {
       _fillCategoriesDropDownButton();
-      _fillEventList();
+      _fillEventList(0);
     }
 
     return Scaffold(
@@ -163,7 +163,7 @@ class _EventListState extends State<EventList> {
           if (selectedCategoryId != 0 &&
               selectedCategoryId != 1 &&
               selectedCategoryId != 2) _fillEntitiesDropDownButton();
-          _fillEventList();
+          _fillEventList(0);
         });
       },
       isExpanded: true,
@@ -221,9 +221,10 @@ class _EventListState extends State<EventList> {
           );
         }).toList(),
         value: _selectedEntityId,
-        onChanged: (value) {
+        onChanged: (selectedEntityId) {
           setState(() {
-            _selectedEntityId = value;
+            _selectedEntityId = selectedEntityId;
+            _fillEventList(1);
           });
         },
         isExpanded: true,
@@ -232,9 +233,9 @@ class _EventListState extends State<EventList> {
   }
 
   //this method will fill the eventList entities from the local db.
-  _fillEventList() async {
+  _fillEventList(int eventsReturnType) async {
     List<Event> eventList =
-        await _databaseHelper.selectEvents(_selectedCategoryId);
+        await _databaseHelper.selectEvents(_selectedCategoryId, _selectedEntityId, eventsReturnType);
     setState(() {
       _eventList = eventList;
       _listCount = eventList.length;

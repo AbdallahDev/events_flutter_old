@@ -210,7 +210,12 @@ class DatabaseHelper {
   //event table
   //select event method, in this method i'll return all events that belong to
   // a whole category based on the provide categoryId.
-  selectEvents(int categoryId) async {
+  //i defined the entityId parameter coz i'll need to return the events for
+  // a specific entity, and the eventsReturnType parameter to decide based on it
+  // if i should return the event list for the a specific category or all
+  // the events or for a
+  // specific entity
+  selectEvents(int categoryId, int entityId, int eventsReturnType) async {
     String sql =
         "select $_eventTable.$_eventIdCol, $_eventTable.$_eventSubjectCol, "
         "$_eventTable.$_eventDateCol, $_eventTable.$_eventTimeCol, "
@@ -219,7 +224,11 @@ class DatabaseHelper {
         "INNER JOIN $_eventsEntitiesTable on "
         "$_eventTable.$_eventIdCol = $_eventsEntitiesTable.$_eventsEntitiesEventIdCol "
         "INNER JOIN $_entityTable on "
-        "$_entityTable.$_entityIdCol = $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol ";
+        "$_entityTable.$_entityIdCol = $_eventsEntitiesTable.$_eventsEntitiesEntityIdCol "
+        "";
+    //here if the values of the eventsReturnType var is 0 that means i should
+    //return the event list for a specific category or for all the events
+    if(eventsReturnType == 0){
     //bellow i'll check if the user choose one of the categories, and didn't
     // select the first choice "جميع الفئات" in the categories dropDownButton,
     // by checking the category id if it's not equal to zero.
@@ -235,6 +244,11 @@ class DatabaseHelper {
               " where $_entityTable.$_entityIdCol =  ${entityIds[i].values}";
         sql = sql + " or $_entityTable.$_entityIdCol =  ${entityIds[i].values}";
       }
+    }}
+    //here if the values of the eventsReturnType var is 1 that means i should
+    //return the event list for a specific entity
+    else if(eventsReturnType == 1){
+      sql = sql + " where $_entityTable.$_entityIdCol = $entityId ";
     }
     Database database = await this.database;
     var mapList = await database.rawQuery(sql);
