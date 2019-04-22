@@ -45,7 +45,7 @@ class DatabaseHelper {
   //this method to initialize the db
   Future<Database> initializeDb() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    var path = directory.path + "notes.db";
+    var path = directory.path + "events.db";
     Database database =
         await openDatabase(path, version: 1, onCreate: (db, version) {
       //category table code
