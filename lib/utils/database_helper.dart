@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:events_flutter/models/category.dart';
 import 'package:events_flutter/models/entity.dart';
 import 'package:events_flutter/models/event.dart';
@@ -228,26 +230,28 @@ class DatabaseHelper {
         "";
     //here if the values of the eventsReturnType var is 0 that means i should
     //return the event list for a specific category or for all the events
-    if(eventsReturnType == 0){
-    //bellow i'll check if the user choose one of the categories, and didn't
-    // select the first choice "جميع الفئات" in the categories dropDownButton,
-    // by checking the category id if it's not equal to zero.
-    if (categoryId != 0) {
-      //this list contains a map objects of entity ids
-      List<Map<String, dynamic>> entityIds =
-          await selectEntities(categoryId, 1);
-      //i'll loop over the entity ids to form the sql statement, where i'll insert
-      // the where conditions based on the number of entity ids
-      for (int i = 0; i < entityIds.length; i++) {
-        if (i == 0)
-          sql = sql +
-              " where $_entityTable.$_entityIdCol =  ${entityIds[i].values}";
-        sql = sql + " or $_entityTable.$_entityIdCol =  ${entityIds[i].values}";
+    if (eventsReturnType == 0) {
+      //bellow i'll check if the user choose one of the categories, and didn't
+      // select the first choice "جميع الفئات" in the categories dropDownButton,
+      // by checking the category id if it's not equal to zero.
+      if (categoryId != 0) {
+        //this list contains a map objects of entity ids
+        List<Map<String, dynamic>> entityIds =
+            await selectEntities(categoryId, 1);
+        //i'll loop over the entity ids to form the sql statement, where i'll insert
+        // the where conditions based on the number of entity ids
+        for (int i = 0; i < entityIds.length; i++) {
+          if (i == 0)
+            sql = sql +
+                " where $_entityTable.$_entityIdCol =  ${entityIds[i].values}";
+          sql =
+              sql + " or $_entityTable.$_entityIdCol =  ${entityIds[i].values}";
+        }
       }
-    }}
+    }
     //here if the values of the eventsReturnType var is 1 that means i should
     //return the event list for a specific entity
-    else if(eventsReturnType == 1){
+    else if (eventsReturnType == 1) {
       sql = sql + " where $_entityTable.$_entityIdCol = $entityId ";
     }
     Database database = await this.database;
