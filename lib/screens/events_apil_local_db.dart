@@ -12,12 +12,7 @@ class _EventsApiLocalDbState extends State<EventsApiLocalDb> {
       appBar: AppBar(
         title: Text("API Events"),
       ),
-      body: Container(
-        child: DropdownButton(
-          items: <DropdownMenuItem>[],
-          onChanged: (value) {},
-        ),
-      ),
+      body: Container(),
     );
   }
 }
