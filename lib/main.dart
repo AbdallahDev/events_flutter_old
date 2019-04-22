@@ -1,3 +1,4 @@
+import 'package:events_flutter/screens/events_apil_local_db.dart';
 import 'package:flutter/material.dart';
 import 'package:events_flutter/screens/event_list.dart';
 
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "JHR Events",
-      home: EventList(),
+      home: EventsApiLocalDb(),
     );
   }
 }
