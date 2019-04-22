@@ -8,6 +8,16 @@ class EventsApiLocalDb extends StatefulWidget {
 class _EventsApiLocalDbState extends State<EventsApiLocalDb> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("API Events"),
+      ),
+      body: Container(
+        child: DropdownButton(
+          items: <DropdownMenuItem>[],
+          onChanged: (value) {},
+        ),
+      ),
+    );
   }
 }
