@@ -16,7 +16,7 @@ class DatabaseHelper {
   String _categoryIdCol = "event_entity_category_id";
   String _categoryNameCol = "event_entity_category_name";
 
-  //entities table and its rows names
+  //Entity table and column names.
   String _entityTable = "entities";
   String _entityIdCol = "id";
   String _entityNameCol = "name";
