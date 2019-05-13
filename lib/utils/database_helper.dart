@@ -12,7 +12,7 @@ class DatabaseHelper {
   static Database _database;
 
   //categories table and its rows names
-  String _categoryTable = "categories";
+  String _categoryTable = "category";
   String _categoryIdCol = "id";
   String _categoryNameCol = "name";
 
@@ -48,19 +48,11 @@ class DatabaseHelper {
     var path = directory.path + "events.db";
     Database database =
         await openDatabase(path, version: 1, onCreate: (db, version) {
-      //category table code
-      //this method to create the category table
-      db.execute(
-          "create table $_categoryTable($_categoryIdCol integer primary key autoincrement, "
-          "$_categoryNameCol text)");
-      //bellow i'll insert values in the category table
-      db.execute("insert into $_categoryTable ($_categoryNameCol) values "
-          "('مكتب دائم'), "
-          "('مكتب تنفيذي'), "
-          " ('كتل'), "
-          "('لجان دائمة'), "
-          "('لجان اخوة'), "
-          "('لجان صداقة')");
+      //The code below to create the category table.
+      String sql =
+          "CREATE TABLE $_categoryTable ($_categoryIdCol INTEGER PRIMARY KEY, "
+          "$_categoryNameCol TEXT)";
+      db.execute(sql);
 
       //entity table code
       //this method to create the entity table
