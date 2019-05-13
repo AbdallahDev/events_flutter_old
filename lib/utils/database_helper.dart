@@ -11,7 +11,7 @@ class DatabaseHelper {
   static final DatabaseHelper databaseHelper = DatabaseHelper.createInstance();
   static Database _database;
 
-  //categories table and its rows names
+  //Category table and columns names.
   String _categoryTable = "category";
   String _categoryIdCol = "event_entity_category_id";
   String _categoryNameCol = "event_entity_category_name";
