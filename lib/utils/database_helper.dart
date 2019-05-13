@@ -13,8 +13,8 @@ class DatabaseHelper {
 
   //categories table and its rows names
   String _categoryTable = "category";
-  String _categoryIdCol = "id";
-  String _categoryNameCol = "name";
+  String _categoryIdCol = "event_entity_category_id";
+  String _categoryNameCol = "event_entity_category_name";
 
   //entities table and its rows names
   String _entityTable = "entities";
